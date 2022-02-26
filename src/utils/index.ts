@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
+export const isVoid = (value: unknown) =>
+    value === undefined || value === null || value === "";
+
 export const useMount = (callback: () => void) => {
     useEffect(() => {
         callback();
