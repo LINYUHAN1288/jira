@@ -15,9 +15,9 @@ export const login = (data: { username: string; password: string }) => {
     return fetch(`${apiUrl}/login`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     }).then(async (response) => {
         if (response.ok) {
             return handleUserrResponse(await response.json());
@@ -31,9 +31,9 @@ export const register = (data: { username: string; password: string }) => {
     return fetch(`${apiUrl}/register`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     }).then(async (response) => {
         if (response.ok) {
             return handleUserrResponse(await response.json());
