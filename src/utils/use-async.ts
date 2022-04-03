@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 interface State<D> {
     error: Error | null;
@@ -12,11 +12,21 @@ const defaultInitialState: State<null> = {
     error: null
 };
 
-export const useAsync = <D>(initialState?: State<D>) => {
+const defaultConfig = {
+    throwOnError: false
+};
+
+export const useAsync = <D>(
+    initialState?: State<D>,
+    initialConfig?: typeof defaultConfig
+) => {
+    const config = { ...defaultConfig, ...initialConfig };
     const [state, setState] = useState<State<D>>({
         ...defaultInitialState,
         ...initialState
     });
+    // 直接传入函数是惰性初始化
+    const [retry, setRetry] = useState(() => () => {});
 
     const setData = (data: D) =>
         setState({
@@ -32,22 +42,33 @@ export const useAsync = <D>(initialState?: State<D>) => {
             data: null
         });
 
-    const run = (promise: Promise<D>) => {
-        if (!promise || !promise.then) {
-            // throw 打断一切进程
-            throw new Error("请传入 Promise 类型数据");
-        }
-        setState({ ...state, status: "loading" });
-        return promise
-            .then((data) => {
-                setData(data);
-                return data;
-            })
-            .catch((error) => {
-                setError(error);
-                return error;
+    const run = useCallback(
+        (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+            if (!promise || !promise.then) {
+                // throw 打断一切进程
+                throw new Error("请传入 Promise 类型数据");
+            }
+            setRetry(() => () => {
+                if (runConfig?.retry) {
+                    run(runConfig?.retry(), runConfig);
+                }
             });
-    };
+            setState({ ...state, status: "loading" });
+            return promise
+                .then((data) => {
+                    setData(data);
+                    return data;
+                })
+                .catch((error) => {
+                    setError(error);
+                    if (config.throwOnError) {
+                        return Promise.reject(error);
+                    }
+                    return error;
+                });
+        },
+        [config.throwOnError, setData, setError]
+    );
 
     return {
         isIdle: state.status === "idle",
