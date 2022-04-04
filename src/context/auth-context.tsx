@@ -2,6 +2,8 @@ import React, { ReactNode, useCallback } from "react";
 import { User } from "types/user";
 import * as auth from "auth-provider";
 import { http } from "utils/http";
+import { useAsync } from "utils/use-async";
+import { useQueryClient } from "react-query";
 
 interface AuthForm {
     username: string;
@@ -31,13 +33,24 @@ const AuthContext = React.createContext<
 AuthContext.displayName = "AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const {
+        data: user,
+        setData: setUser,
+        run,
+        error,
+        isIdle,
+        isLoading,
+        isError
+    } = useAsync<User | null>();
+    const queryClient = useQueryClient();
+
     const login = (form: AuthForm) => auth.login(form).then(setUser);
     const register = (form: AuthForm) => auth.login(form).then(setUser);
-    const logout = () => {
+    const logout = () =>
         auth.logout().then(() => {
             setUser(null);
+            queryClient.clear();
         });
-    };
 
     return (
         <AuthContext.Provider
