@@ -4,6 +4,8 @@ import * as auth from "auth-provider";
 import { http } from "utils/http";
 import { useAsync } from "utils/use-async";
 import { useQueryClient } from "react-query";
+import { useMount } from "utils";
+import { FullPageLoading } from "components/lib";
 
 interface AuthForm {
     username: string;
@@ -51,6 +53,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(null);
             queryClient.clear();
         });
+
+    useMount(
+        useCallback(() => {
+            run(bootstrapUser());
+        }, [])
+    );
+
+    if (isLoading || isIdle) {
+        return <FullPageLoading />;
+    }
+
+    if (isError) {
+        return;
+    }
 
     return (
         <AuthContext.Provider
