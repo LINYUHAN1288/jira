@@ -8,7 +8,7 @@ const useRouteType = () => {
     return units[units.length - 1];
 };
 
-export const ProjectScreen = () => {
+export const ProjectPage = () => {
     const routeType = useRouteType();
     return (
         <Container>

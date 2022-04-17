@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { Spin, Typography } from "antd";
+import { Button, Spin, Typography } from "antd";
 
+export const Row = styled.div;
 const FullPage = styled.div`
     display: flex;
     justify-content: center;
@@ -20,6 +21,7 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
     </FullPage>
 );
 
+// 类型守卫 or 类型保护
 export const isError = (value: any): value is Error => value?.message;
 
 export const ErrorBox = ({ error }: { error: unknown }) => {
@@ -28,3 +30,7 @@ export const ErrorBox = ({ error }: { error: unknown }) => {
     }
     return null;
 };
+
+export const ButtonNoPadding = styled(Button)`
+    padding: 0;
+`;
