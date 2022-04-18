@@ -5,7 +5,7 @@ import { http } from "utils/http";
 import { useAsync } from "utils/use-async";
 import { useQueryClient } from "react-query";
 import { useMount } from "utils";
-import { FullPageLoading } from "components/lib";
+import { FullPageErrorFallback, FullPageLoading } from "components/lib";
 
 interface AuthForm {
     username: string;
@@ -16,9 +16,11 @@ const bootstrapUser = async () => {
     let user = null;
     const token = auth.getToken();
     if (token) {
+        console.log("token===", token);
         const data = await http("me", { token });
         user = data.user;
     }
+    console.log("token1", token);
     return user;
 };
 
@@ -65,7 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     if (isError) {
-        return;
+        return <FullPageErrorFallback error={error} />;
     }
 
     return (

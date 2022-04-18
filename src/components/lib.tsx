@@ -1,7 +1,13 @@
 import styled from "@emotion/styled";
 import { Button, Spin, Typography } from "antd";
+import React from "react";
 
-export const Row = styled.div;
+export const Row = styled.div<{
+    marginBottom?: number;
+}>`
+    display: flex;
+`;
+
 const FullPage = styled.div`
     display: flex;
     justify-content: center;
