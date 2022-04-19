@@ -49,7 +49,7 @@ export const useArray = <T>(initialArray: T[]) => {
             const copy = [...value];
             copy.splice(index, 1);
             setValue(copy);
-        },
+        }
     };
 };
 
@@ -62,4 +62,20 @@ export const useMountedRef = () => {
             mountedRef.current = false;
         };
     });
+};
+
+export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
+    const oldTitle = useRef(document.title).current;
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
+    useEffect(() => {
+        return () => {
+            if (!keepOnUnmount) {
+                document.title = oldTitle;
+            }
+        };
+    }, [keepOnUnmount, oldTitle]);
 };
