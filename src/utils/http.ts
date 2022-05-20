@@ -48,6 +48,7 @@ export const http = async (
 export const useHttp = () => {
     const { user } = useAuth();
     return useCallback(
+        // Parameters 是 ts 内置类型方法，用于获取参数列表类型
         (...[endpoint, config]: Parameters<typeof http>) => {
             return http(endpoint, { ...config, token: user?.token });
         },
