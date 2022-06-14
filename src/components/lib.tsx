@@ -3,9 +3,15 @@ import { Button, Spin, Typography } from "antd";
 import React from "react";
 
 export const Row = styled.div<{
+    gap?: number | boolean;
+    between?: boolean;
     marginBottom?: number;
 }>`
     display: flex;
+    align-items: center;
+    justify-content: ${(props) =>
+        props.between ? "space-between" : undefined};
+    margin-bottom: ${(props) => props.marginBottom + "rem"};
 `;
 
 const FullPage = styled.div`
