@@ -1,3 +1,8 @@
+/**
+ * @file use-async.ts
+ * @author linyuhan
+ */
+
 import { useState, useCallback } from "react";
 
 interface State<D> {
@@ -21,6 +26,7 @@ export const useAsync = <D>(
     initialConfig?: typeof defaultConfig
 ) => {
     const config = { ...defaultConfig, ...initialConfig };
+    // useState<T>, T 泛型代表变量类型, 如下为 State<D>
     const [state, setState] = useState<State<D>>({
         ...defaultInitialState,
         ...initialState

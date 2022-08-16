@@ -1,10 +1,15 @@
+/**
+ * @file auth-page
+ * @author linyuhan
+ * @description 主界面
+ */
+
 import { Button, Dropdown, Menu } from "antd";
 import { ButtonNoPadding, Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { useAuth } from "context/auth-context";
 import { Route, Routes } from "react-router";
 import styled from "@emotion/styled";
-import React from "react";
 
 export default function AuthPage() {
     return (
@@ -38,11 +43,17 @@ const User = () => {
         <Dropdown
             overlay={
                 <Menu>
-                    <Menu.Item key={"logout"}></Menu.Item>
+                    <Menu.Item key={"logout"}>
+                        <Button onClick={logout} type={"link"}>
+                            logout
+                        </Button>
+                    </Menu.Item>
                 </Menu>
             }
         >
-            <Button></Button>
+            <Button type={"link"} onClick={(e) => e.preventDefault()}>
+                Hi, {user?.name}
+            </Button>
         </Dropdown>
     );
 };

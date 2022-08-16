@@ -1,8 +1,14 @@
+/**
+ * @file unauth-page
+ * @author linyuhan
+ * @description 登录注册界面
+ */
+
 import styled from "@emotion/styled";
 import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDocumentTitle } from "utils";
 import { Login } from "./login";
 import { Register } from "./register";
