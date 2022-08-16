@@ -9,6 +9,8 @@ import { ButtonNoPadding, Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { useAuth } from "context/auth-context";
 import { Route, Routes } from "react-router";
+import { BillboardPage } from "pages/billboard";
+import React from "react";
 import styled from "@emotion/styled";
 
 export default function AuthPage() {
@@ -17,8 +19,9 @@ export default function AuthPage() {
             <PageHeader />
             <Main>
                 <Routes>
-                    <Route />
+                    <Route element={<BillboardPage />} />
                 </Routes>
+                <BillboardPage />
             </Main>
         </Container>
     );
@@ -69,6 +72,7 @@ const Header = styled(Row)`
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
     z-index: 1;
 `;
+
 const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 

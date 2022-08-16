@@ -1,5 +1,11 @@
+/**
+ * @file lib.tsx 组件封装
+ * @author linyuhan
+ */
+
 import styled from "@emotion/styled";
 import { Button, Spin, Typography } from "antd";
+import React from "react";
 
 export const Row = styled.div<{
     gap?: number | boolean;

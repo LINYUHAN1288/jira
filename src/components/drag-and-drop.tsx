@@ -37,6 +37,7 @@ export const Drop = ({ children, ...props }: DropProps) => {
     );
 };
 
+// forwardRef 获取深层次子孙组件的 DOM 元素
 export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
     ({ children, ...props }, ref) => (
         <div ref={ref} {...props}>
@@ -49,13 +50,28 @@ export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
 export const Drag = ({ children, ...props }: DragProps) => {
     return (
         <Draggable {...props}>
-            {(provided) => {
-                return React.cloneElement(children, {
-                    ...provided.draggableProps,
-                    ...provided.dragHandleProps,
-                    ref: provided.innerRef
-                });
+            {(provided, snapshot) => {
+                if (React.isValidElement(children)) {
+                    return React.cloneElement(children, {
+                        ...provided.draggableProps,
+                        ...provided.dragHandleProps,
+                        ref: provided.innerRef,
+                        style: getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps?.style
+                        )
+                    });
+                }
+                return <div />;
             }}
         </Draggable>
     );
 };
+
+const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    userSelect: "none",
+    padding: 8 * 2,
+    margin: `0 0 8px 0`,
+    background: isDragging ? "lightgreen" : "grey",
+    ...draggableStyle
+});
