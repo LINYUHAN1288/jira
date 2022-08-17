@@ -19,9 +19,8 @@ export default function AuthPage() {
             <PageHeader />
             <Main>
                 <Routes>
-                    <Route element={<BillboardPage />} />
+                    <Route index element={<BillboardPage />} />
                 </Routes>
-                <BillboardPage />
             </Main>
         </Container>
     );
