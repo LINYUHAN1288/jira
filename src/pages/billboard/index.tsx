@@ -3,16 +3,11 @@
  * @author linyuhan
  */
 
-import { useDocumentTitle } from "utils";
-import { Drag, Drop, DropChild } from "components/drag-and-drop";
-import {
-    DragDropContext,
-    Droppable,
-    Draggable,
-    DropResult
-} from "react-beautiful-dnd";
-import styled from "@emotion/styled";
-import React from "react";
+import { useDocumentTitle } from 'utils';
+import { Drag, Drop, DropChild } from 'components/drag-and-drop';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import styled from '@emotion/styled';
+import React from 'react';
 
 const getItems = (cnt: number) =>
     Array.from({ length: cnt }, (v, k) => k).map((k) => ({
@@ -29,21 +24,21 @@ const reorder = (list: any, startIndex: number, endIndex: number): any => {
 };
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-    userSelect: "none",
+    userSelect: 'none',
     padding: 8 * 2,
     margin: `0 0 8px 0`,
-    background: isDragging ? "lightgreen" : "grey",
+    background: isDragging ? 'lightgreen' : 'grey',
     ...draggableStyle
 });
 
 const getListStyle = (isDraggingOver: boolean) => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey",
+    background: isDraggingOver ? 'lightblue' : 'lightgrey',
     padding: 8,
     width: 250
 });
 
 export const BillboardPage = () => {
-    useDocumentTitle("Billboard Page");
+    useDocumentTitle('Billboard Page');
     let items = getItems(10);
     const onDragEnd = (res: DropResult) => {
         if (!res.destination) {
@@ -53,7 +48,7 @@ export const BillboardPage = () => {
     };
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={"billboard"} type={"COLUMN"}>
+            <Droppable droppableId={'billboard'} type={'COLUMN'}>
                 {(provided, snapshot) => (
                     <div
                         {...provided.droppableProps}
@@ -61,20 +56,13 @@ export const BillboardPage = () => {
                         style={getListStyle(snapshot.isDraggingOver)}
                     >
                         {items.map((item, index) => (
-                            <Draggable
-                                key={item.id}
-                                draggableId={item.id}
-                                index={index}
-                            >
+                            <Draggable key={item.id} draggableId={item.id} index={index}>
                                 {(provided, snapshot) => (
                                     <div
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                        style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style
-                                        )}
+                                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                     >
                                         {item.content}
                                     </div>

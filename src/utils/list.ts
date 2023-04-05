@@ -1,8 +1,8 @@
-import { useMemo } from "react";
-import { useUrlQueryParam, useSetUrlSearchParam } from "./url";
+import { useMemo } from 'react';
+import { useUrlQueryParam, useSetUrlSearchParam } from './url';
 
 export const useListSearchParams = () => {
-    const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+    const [param, setParam] = useUrlQueryParam(['name', 'personId']);
     return [
         useMemo(() => {
             return {

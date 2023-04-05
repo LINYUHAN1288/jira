@@ -1,11 +1,11 @@
-import React, { ReactNode, useCallback } from "react";
-import { User } from "types/user";
-import * as auth from "auth-provider";
-import { http } from "utils/http";
-import { useAsync } from "utils/use-async";
-import { useQueryClient } from "react-query";
-import { useMount } from "utils";
-import { FullPageErrorFallback, FullPageLoading } from "components/lib";
+import React, { ReactNode, useCallback } from 'react';
+import { User } from 'types/user';
+import * as auth from 'auth-provider';
+import { http } from 'utils/http';
+import { useAsync } from 'utils/use-async';
+import { useQueryClient } from 'react-query';
+import { useMount } from 'utils';
+import { FullPageErrorFallback, FullPageLoading } from 'components/lib';
 
 interface AuthForm {
     username: string;
@@ -20,7 +20,7 @@ const bootstrapUser = async () => {
         const data = {
             user: {
                 id: 1,
-                name: "linyuhan",
+                name: 'linyuhan',
                 token: token
             }
         };
@@ -39,18 +39,10 @@ const AuthContext = React.createContext<
     | undefined
 >(undefined);
 
-AuthContext.displayName = "AuthContext";
+AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const {
-        data: user,
-        setData: setUser,
-        run,
-        error,
-        isIdle,
-        isLoading,
-        isError
-    } = useAsync<User | null>();
+    const { data: user, setData: setUser, run, error, isIdle, isLoading, isError } = useAsync<User | null>();
     const queryClient = useQueryClient();
 
     const login = (form: AuthForm) => auth.login(form).then(setUser);
@@ -75,18 +67,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return <FullPageErrorFallback error={error} />;
     }
 
-    return (
-        <AuthContext.Provider
-            children={children}
-            value={{ user, login, register, logout }}
-        />
-    );
+    return <AuthContext.Provider children={children} value={{ user, login, register, logout }} />;
 };
 
 export const useAuth = () => {
     const context = React.useContext(AuthContext);
     if (!context) {
-        throw new Error("xxx");
+        throw new Error('xxx');
     }
     return context;
 };

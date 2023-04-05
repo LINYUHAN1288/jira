@@ -4,14 +4,14 @@
  * @description 主界面
  */
 
-import { Button, Dropdown, Menu } from "antd";
-import { ButtonNoPadding, Row } from "components/lib";
-import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
-import { useAuth } from "context/auth-context";
-import { Route, Routes } from "react-router";
-import { BillboardPage } from "pages/billboard";
-import React from "react";
-import styled from "@emotion/styled";
+import { Button, Dropdown, Menu } from 'antd';
+import { ButtonNoPadding, Row } from 'components/lib';
+import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
+import { useAuth } from 'context/auth-context';
+import { Route, Routes } from 'react-router';
+import { BillboardPage } from 'pages/billboard';
+import React from 'react';
+import styled from '@emotion/styled';
 
 export default function AuthPage() {
     return (
@@ -30,8 +30,8 @@ const PageHeader = () => {
     return (
         <Header>
             <HeaderLeft>
-                <ButtonNoPadding type={"link"}>
-                    <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+                <ButtonNoPadding type={'link'}>
+                    <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
                 </ButtonNoPadding>
             </HeaderLeft>
             <HeaderRight></HeaderRight>
@@ -45,15 +45,15 @@ const User = () => {
         <Dropdown
             overlay={
                 <Menu>
-                    <Menu.Item key={"logout"}>
-                        <Button onClick={logout} type={"link"}>
+                    <Menu.Item key={'logout'}>
+                        <Button onClick={logout} type={'link'}>
                             logout
                         </Button>
                     </Menu.Item>
                 </Menu>
             }
         >
-            <Button type={"link"} onClick={(e) => e.preventDefault()}>
+            <Button type={'link'} onClick={(e) => e.preventDefault()}>
                 Hi, {user?.name}
             </Button>
         </Dropdown>

@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
-import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
-import { cleanObject, subset } from "utils";
+import { useMemo, useState } from 'react';
+import { URLSearchParamsInit, useSearchParams } from 'react-router-dom';
+import { cleanObject, subset } from 'utils';
 
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     const [searchParams] = useSearchParams();

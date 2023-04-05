@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
-import { Route, Routes, useLocation } from "react-router";
-import styled from "@emotion/styled";
-import { Menu } from "antd";
+import { Link } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router';
+import styled from '@emotion/styled';
+import { Menu } from 'antd';
 
 const useRouteType = () => {
-    const units = useLocation().pathname.split("/");
+    const units = useLocation().pathname.split('/');
     return units[units.length - 1];
 };
 
@@ -13,7 +13,7 @@ export const ProjectPage = () => {
     return (
         <Container>
             <Aside>
-                <Menu mode={"inline"} selectedKeys={[routeType]}>
+                <Menu mode={'inline'} selectedKeys={[routeType]}>
                     <Menu.Item>
                         <Link to=""></Link>
                     </Menu.Item>

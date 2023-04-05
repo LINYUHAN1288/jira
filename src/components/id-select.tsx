@@ -3,14 +3,13 @@
  * @author linyuhan
  */
 
-import React from "react";
-import { Raw } from "types";
-import { Select } from "antd";
+import React from 'react';
+import { Raw } from 'types';
+import { Select } from 'antd';
 
 type SelectProps = React.ComponentProps<typeof Select>;
 
-interface IdSelectProps
-    extends Omit<SelectProps, "value" | "onChange" | "options"> {
+interface IdSelectProps extends Omit<SelectProps, 'value' | 'onChange' | 'options'> {
     value?: Raw | null | undefined;
     onChange?: (value?: number) => void;
     defaultOptionName?: string;
@@ -25,9 +24,7 @@ export const IdSelect = (props: IdSelectProps) => {
             onChange={(value) => onChange?.(toNumber(value) || undefined)}
             {...restProps}
         >
-            {defaultOptionName ? (
-                <Select.Option value={0}>{defaultOptionName}</Select.Option>
-            ) : null}
+            {defaultOptionName ? <Select.Option value={0}>{defaultOptionName}</Select.Option> : null}
             {options?.map((option) => (
                 <Select.Option key={option.id} value={option.id}>
                     {option.name}

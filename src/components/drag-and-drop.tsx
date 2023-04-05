@@ -3,7 +3,7 @@
  * @author linyuhan
  */
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 import {
     Draggable,
     Droppable,
@@ -11,13 +11,11 @@ import {
     DraggableProps,
     DroppableProvided,
     DroppableProvidedProps
-} from "react-beautiful-dnd";
+} from 'react-beautiful-dnd';
 
-type DropProps = Omit<DroppableProps, "children"> & { children: ReactNode };
-type DragProps = Omit<DraggableProps, "children"> & { children: ReactNode };
-type DropChildProps = Partial<
-    { provided: DroppableProvided } & DroppableProvidedProps
-> &
+type DropProps = Omit<DroppableProps, 'children'> & { children: ReactNode };
+type DragProps = Omit<DraggableProps, 'children'> & { children: ReactNode };
+type DropChildProps = Partial<{ provided: DroppableProvided } & DroppableProvidedProps> &
     React.HTMLAttributes<HTMLDivElement>;
 
 export const Drop = ({ children, ...props }: DropProps) => {
@@ -38,14 +36,12 @@ export const Drop = ({ children, ...props }: DropProps) => {
 };
 
 // forwardRef 获取深层次子孙组件的 DOM 元素
-export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
-    ({ children, ...props }, ref) => (
-        <div ref={ref} {...props}>
-            {children}
-            {props.provided?.placeholder}
-        </div>
-    )
-);
+export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(({ children, ...props }, ref) => (
+    <div ref={ref} {...props}>
+        {children}
+        {props.provided?.placeholder}
+    </div>
+));
 
 export const Drag = ({ children, ...props }: DragProps) => {
     return (
@@ -56,10 +52,7 @@ export const Drag = ({ children, ...props }: DragProps) => {
                         ...provided.draggableProps,
                         ...provided.dragHandleProps,
                         ref: provided.innerRef,
-                        style: getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps?.style
-                        )
+                        style: getItemStyle(snapshot.isDragging, provided.draggableProps?.style)
                     });
                 }
                 return <div />;
@@ -69,9 +62,9 @@ export const Drag = ({ children, ...props }: DragProps) => {
 };
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-    userSelect: "none",
+    userSelect: 'none',
     padding: 8 * 2,
     margin: `0 0 8px 0`,
-    background: isDragging ? "lightgreen" : "grey",
+    background: isDragging ? 'lightgreen' : 'grey',
     ...draggableStyle
 });

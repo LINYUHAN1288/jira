@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
-export const isVoid = (value: unknown) =>
-    value === undefined || value === null || value === "";
+export const isVoid = (value: unknown) => value === undefined || value === null || value === '';
 
 export const useMount = (callback: () => void) => {
     useEffect(() => {
@@ -80,15 +79,7 @@ export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
     }, [keepOnUnmount, oldTitle]);
 };
 
-export const subset = <
-    O extends { [key in string]: unknown },
-    K extends keyof O
->(
-    obj: O,
-    keys: K[]
-) => {
-    const filteredEntries = Object.entries(obj).filter(([key]) =>
-        keys.includes(key as K)
-    );
+export const subset = <O extends { [key in string]: unknown }, K extends keyof O>(obj: O, keys: K[]) => {
+    const filteredEntries = Object.entries(obj).filter(([key]) => keys.includes(key as K));
     return Object.fromEntries(filteredEntries) as Pick<O, K>;
 };

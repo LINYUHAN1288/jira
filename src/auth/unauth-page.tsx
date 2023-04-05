@@ -1,41 +1,37 @@
 /**
- * @file unauth-page
+ * @file un-auth-page
  * @author linyuhan
  * @description 登录注册界面
  */
 
-import styled from "@emotion/styled";
-import logo from "assets/logo.svg";
-import left from "assets/left.svg";
-import right from "assets/right.svg";
-import { useState } from "react";
-import { useDocumentTitle } from "utils";
-import { Login } from "./login";
-import { Register } from "./register";
-import { Card, Divider, Button } from "antd";
-import { ErrorBox } from "components/lib";
+import styled from '@emotion/styled';
+import logo from 'assets/logo.svg';
+import left from 'assets/left.svg';
+import right from 'assets/right.svg';
+import { useState } from 'react';
+import { useDocumentTitle } from 'utils';
+import { Login } from './login';
+import { Register } from './register';
+import { Card, Divider, Button } from 'antd';
+import { ErrorBox } from 'components/lib';
 
 export default function UnauthPage() {
     const [isRegister, setIsRegister] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    useDocumentTitle("请登录注册以继续");
+    useDocumentTitle('请登录注册以继续');
 
     return (
         <Container>
             <Header />
             <Background />
             <ShadowCard>
-                <Title>{isRegister ? "请注册" : "请登录"}</Title>
+                <Title>{isRegister ? '请注册' : '请登录'}</Title>
                 <ErrorBox error={error} />
-                {isRegister ? (
-                    <Register onError={setError} />
-                ) : (
-                    <Login onError={setError} />
-                )}
+                {isRegister ? <Register onError={setError} /> : <Login onError={setError} />}
                 <Divider />
                 <Button type="link" onClick={() => setIsRegister(!isRegister)}>
-                    {isRegister ? "已有账号？直接登录" : "注册新账号"}
+                    {isRegister ? '已有账号？直接登录' : '注册新账号'}
                 </Button>
             </ShadowCard>
         </Container>
@@ -56,8 +52,7 @@ const Background = styled.div`
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: left bottom, right bottom;
-    background-size: calc(((100vw - 40rem) / 2) - 3.2rem),
-        calc(((100vw - 40rem) / 2) - 3.2rem), cover;
+    background-size: calc(((100vw - 40rem) / 2) - 3.2rem), calc(((100vw - 40rem) / 2) - 3.2rem), cover;
     background-image: url(${left}), url(${right});
 `;
 

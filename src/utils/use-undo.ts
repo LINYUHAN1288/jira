@@ -3,12 +3,12 @@
  * @author linyuhan
  */
 
-import { useCallback, useReducer } from "react";
+import { useCallback, useReducer } from 'react';
 
-const UNDO = "UNDO";
-const REDO = "REDO";
-const SET = "SET";
-const RESET = "RESET";
+const UNDO = 'UNDO';
+const REDO = 'REDO';
+const SET = 'SET';
+const RESET = 'RESET';
 
 type State<T> = {
     past: T[];
@@ -93,15 +93,9 @@ export const useUndo = <T>(initialPresent: T) => {
 
     const redo = useCallback(() => dispatch({ type: REDO }), []);
 
-    const set = useCallback(
-        (newPresent: T) => dispatch({ type: SET, newPresent }),
-        []
-    );
+    const set = useCallback((newPresent: T) => dispatch({ type: SET, newPresent }), []);
 
-    const reset = useCallback(
-        (newPresent: T) => dispatch({ type: RESET, newPresent }),
-        []
-    );
+    const reset = useCallback((newPresent: T) => dispatch({ type: RESET, newPresent }), []);
 
     return [state, { set, reset, undo, redo, canUndo, canRedo }] as const;
 };

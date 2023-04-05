@@ -3,16 +3,16 @@
  * @author linyuhan
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 interface State<D> {
     error: Error | null;
     data: D | null;
-    status: "idle" | "loading" | "error" | "success";
+    status: 'idle' | 'loading' | 'error' | 'success';
 }
 
 const defaultInitialState: State<null> = {
-    status: "idle",
+    status: 'idle',
     data: null,
     error: null
 };
@@ -21,10 +21,7 @@ const defaultConfig = {
     throwOnError: false
 };
 
-export const useAsync = <D>(
-    initialState?: State<D>,
-    initialConfig?: typeof defaultConfig
-) => {
+export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConfig) => {
     const config = { ...defaultConfig, ...initialConfig };
     // useState<T>, T 泛型代表变量类型, 如下为 State<D>
     const [state, setState] = useState<State<D>>({
@@ -37,14 +34,14 @@ export const useAsync = <D>(
     const setData = (data: D) =>
         setState({
             data,
-            status: "success",
+            status: 'success',
             error: null
         });
 
     const setError = (error: Error) =>
         setState({
             error,
-            status: "error",
+            status: 'error',
             data: null
         });
 
@@ -52,14 +49,14 @@ export const useAsync = <D>(
         (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
             if (!promise || !promise.then) {
                 // throw 打断一切进程
-                throw new Error("请传入 Promise 类型数据");
+                throw new Error('请传入 Promise 类型数据');
             }
             setRetry(() => () => {
                 if (runConfig?.retry) {
                     run(runConfig?.retry(), runConfig);
                 }
             });
-            setState({ ...state, status: "loading" });
+            setState({ ...state, status: 'loading' });
             return promise
                 .then((data) => {
                     setData(data);
@@ -77,10 +74,10 @@ export const useAsync = <D>(
     );
 
     return {
-        isIdle: state.status === "idle",
-        isLoading: state.status === "loading",
-        isError: state.status === "error",
-        isSuccess: state.status === "success",
+        isIdle: state.status === 'idle',
+        isLoading: state.status === 'loading',
+        isError: state.status === 'error',
+        isSuccess: state.status === 'success',
         run,
         setData,
         setError,

@@ -4,12 +4,12 @@
  */
 
 // import React from "react";
-import { User } from "types/user";
-import { TableProps, Table, Modal, Dropdown, Menu } from "antd";
-import { Project } from "types/project";
-import { Pin } from "components/pin";
-import { Link } from "react-router-dom";
-import { ButtonNoPadding } from "components/lib";
+import { User } from 'types/user';
+import { TableProps, Table, Modal, Dropdown, Menu } from 'antd';
+import { Project } from 'types/project';
+import { Pin } from 'components/pin';
+import { Link } from 'react-router-dom';
+import { ButtonNoPadding } from 'components/lib';
 
 interface ListProps extends TableProps<Project> {
     users: User[];
@@ -18,7 +18,7 @@ interface ListProps extends TableProps<Project> {
 export const ListPanel = ({ users, ...props }: ListProps) => {
     return (
         <Table
-            rowKey={"id"}
+            rowKey={'id'}
             pagination={false}
             columns={[
                 {
@@ -28,25 +28,25 @@ export const ListPanel = ({ users, ...props }: ListProps) => {
                     }
                 },
                 {
-                    title: "名称",
+                    title: '名称',
                     render: (value: unknown, project: Project) => {
                         return <Link to={`projects/${String(project.id)}`}>{project.name}</Link>;
                     }
                 },
                 {
-                    title: "部门",
-                    dataIndex: "organization"
+                    title: '部门',
+                    dataIndex: 'organization'
                 },
                 {
-                    title: "负责人",
+                    title: '负责人',
                     render: (value: unknown, project: Project) => {
-                        return <span>{users.find((user) => user.id === project.personId)?.name || "未知"}</span>;
+                        return <span>{users.find((user) => user.id === project.personId)?.name || '未知'}</span>;
                     }
                 },
                 {
-                    title: "创建时间",
+                    title: '创建时间',
                     render: (value, project) => {
-                        return <span>{project.created ? dayjs(project.created).format("YYYY-MM-DD") : "无"}</span>;
+                        return <span>{project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'}</span>;
                     }
                 },
                 {
@@ -63,8 +63,8 @@ export const ListPanel = ({ users, ...props }: ListProps) => {
 const More = ({ project }: { project: Project }) => {
     const deleteProject = (id: number) => {
         Modal.confirm({
-            title: "delete",
-            okText: "yes"
+            title: 'delete',
+            okText: 'yes'
         });
     };
     return (
@@ -72,13 +72,13 @@ const More = ({ project }: { project: Project }) => {
             overlay={
                 <Menu>
                     <Menu.Item>编辑</Menu.Item>
-                    <Menu.Item onClick={() => deleteProject(project.id)} key={"delete"}>
+                    <Menu.Item onClick={() => deleteProject(project.id)} key={'delete'}>
                         删除
                     </Menu.Item>
                 </Menu>
             }
         >
-            <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
+            <ButtonNoPadding type={'link'}>...</ButtonNoPadding>
         </Dropdown>
     );
 };

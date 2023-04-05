@@ -3,9 +3,9 @@
  * @author linyuhan
  */
 
-import styled from "@emotion/styled";
-import { Button, Spin, Typography } from "antd";
-import React from "react";
+import styled from '@emotion/styled';
+import { Button, Spin, Typography } from 'antd';
+import React from 'react';
 
 export const Row = styled.div<{
     gap?: number | boolean;
@@ -14,9 +14,8 @@ export const Row = styled.div<{
 }>`
     display: flex;
     align-items: center;
-    justify-content: ${(props) =>
-        props.between ? "space-between" : undefined};
-    margin-bottom: ${(props) => props.marginBottom + "rem"};
+    justify-content: ${(props) => (props.between ? 'space-between' : undefined)};
+    margin-bottom: ${(props) => props.marginBottom + 'rem'};
 `;
 
 const FullPage = styled.div`
@@ -28,7 +27,7 @@ const FullPage = styled.div`
 
 export const FullPageLoading = () => (
     <FullPage>
-        <Spin size={"large"} />
+        <Spin size={'large'} />
     </FullPage>
 );
 
@@ -43,7 +42,7 @@ export const isError = (value: any): value is Error => value?.message;
 
 export const ErrorBox = ({ error }: { error: unknown }) => {
     if (isError(error)) {
-        return <Typography.Text type={"danger"}></Typography.Text>;
+        return <Typography.Text type={'danger'}></Typography.Text>;
     }
     return null;
 };
