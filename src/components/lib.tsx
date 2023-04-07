@@ -14,8 +14,14 @@ export const Row = styled.div<{
 }>`
     display: flex;
     align-items: center;
-    justify-content: ${(props) => (props.between ? 'space-between' : undefined)};
-    margin-bottom: ${(props) => props.marginBottom + 'rem'};
+    justify-content: ${props => (props.between ? 'space-between' : undefined)};
+    margin-bottom: ${props => props.marginBottom + 'rem'};
+
+    > * {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        margin-right: ${props => (typeof props.gap === 'number' ? props.gap + 'rem' : props.gap)};
+    }
 `;
 
 const FullPage = styled.div`
@@ -37,7 +43,7 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
     </FullPage>
 );
 
-// 类型守卫 or 类型保护
+// TypeScript is 类型守卫 or 类型保护
 export const isError = (value: any): value is Error => value?.message;
 
 export const ErrorBox = ({ error }: { error: unknown }) => {

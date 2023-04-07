@@ -4,14 +4,15 @@
  * @description 主界面
  */
 
+import React from 'react';
 import { Button, Dropdown, Menu } from 'antd';
 import { ButtonNoPadding, Row } from 'components/lib';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
 import { useAuth } from 'context/auth-context';
 import { Route, Routes } from 'react-router';
-import { BillboardPage } from 'pages/billboard';
-import React from 'react';
+import { BoardPage } from 'pages/board';
 import styled from '@emotion/styled';
+import { ProjectPopover, UserPopover } from 'components/popover';
 
 export default function AuthPage() {
     return (
@@ -19,7 +20,7 @@ export default function AuthPage() {
             <PageHeader />
             <Main>
                 <Routes>
-                    <Route index element={<BillboardPage />} />
+                    <Route index element={<BoardPage />} />
                 </Routes>
             </Main>
         </Container>
@@ -28,13 +29,17 @@ export default function AuthPage() {
 
 const PageHeader = () => {
     return (
-        <Header>
-            <HeaderLeft>
+        <Header between={true}>
+            <HeaderLeft gap={2}>
                 <ButtonNoPadding type={'link'}>
                     <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
                 </ButtonNoPadding>
+                <ProjectPopover />
+                <UserPopover />
             </HeaderLeft>
-            <HeaderRight></HeaderRight>
+            <HeaderRight>
+                <User />
+            </HeaderRight>
         </Header>
     );
 };
@@ -53,7 +58,7 @@ const User = () => {
                 </Menu>
             }
         >
-            <Button type={'link'} onClick={(e) => e.preventDefault()}>
+            <Button type={'link'} onClick={e => e.preventDefault()}>
                 Hi, {user?.name}
             </Button>
         </Dropdown>
@@ -77,6 +82,5 @@ const HeaderRight = styled.div``;
 
 const Main = styled.main`
     display: flex;
-    background: pink;
     overflow: hidden;
 `;

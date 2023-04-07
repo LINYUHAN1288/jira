@@ -10,6 +10,7 @@ import { Project } from 'types/project';
 import { Pin } from 'components/pin';
 import { Link } from 'react-router-dom';
 import { ButtonNoPadding } from 'components/lib';
+import dayjs from 'dayjs';
 
 interface ListProps extends TableProps<Project> {
     users: User[];
@@ -40,7 +41,7 @@ export const ListPanel = ({ users, ...props }: ListProps) => {
                 {
                     title: '负责人',
                     render: (value: unknown, project: Project) => {
-                        return <span>{users.find((user) => user.id === project.personId)?.name || '未知'}</span>;
+                        return <span>{users.find(user => user.id === project.personId)?.name || '未知'}</span>;
                     }
                 },
                 {

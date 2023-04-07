@@ -4,7 +4,7 @@ import { useAuth } from 'context/auth-context';
 import './App.css';
 
 const AuthPage = React.lazy(() => import('auth/auth-page'));
-const UnAuthPage = React.lazy(() => import('auth/unauth-page'));
+const UnAuthPage = React.lazy(() => import('auth/un-auth-page'));
 
 function App() {
     const { user } = useAuth();

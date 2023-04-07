@@ -1,16 +1,16 @@
 /**
- * @file billboard page 公告页面
+ * @file board page 公告页面
  * @author linyuhan
  */
 
+import React from 'react';
 import { useDocumentTitle } from 'utils';
 import { Drag, Drop, DropChild } from 'components/drag-and-drop';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import styled from '@emotion/styled';
-import React from 'react';
 
 const getItems = (cnt: number) =>
-    Array.from({ length: cnt }, (v, k) => k).map((k) => ({
+    Array.from({ length: cnt }, (v, k) => k).map(k => ({
         id: `item-${k}`,
         content: `item-${k}`
     }));
@@ -37,8 +37,8 @@ const getListStyle = (isDraggingOver: boolean) => ({
     width: 250
 });
 
-export const BillboardPage = () => {
-    useDocumentTitle('Billboard Page');
+export const BoardPage = () => {
+    useDocumentTitle('Board Page');
     let items = getItems(10);
     const onDragEnd = (res: DropResult) => {
         if (!res.destination) {
@@ -82,5 +82,4 @@ export const Container = styled.div`
     flex-direction: column;
     padding: 3.2rem;
     width: 100%;
-    background-color: blue;
 `;

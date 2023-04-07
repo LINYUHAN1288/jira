@@ -4,6 +4,7 @@
  * @description 登录注册界面
  */
 
+import React from 'react';
 import styled from '@emotion/styled';
 import logo from 'assets/logo.svg';
 import left from 'assets/left.svg';
@@ -15,7 +16,7 @@ import { Register } from './register';
 import { Card, Divider, Button } from 'antd';
 import { ErrorBox } from 'components/lib';
 
-export default function UnauthPage() {
+export default function UnAuthPage() {
     const [isRegister, setIsRegister] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
