@@ -50,6 +50,6 @@ export const useReorderTaskConfig = (queryKey: QueryKey) => {
     });
 };
 
-export const useReorderBillboardConfig = (queryKey: QueryKey) => {
+export const useReorderBoardConfig = (queryKey: QueryKey) => {
     return useConfig(queryKey, (target, old) => reorder({ list: old, ...target }));
 };
