@@ -61,6 +61,8 @@ export const useMountedRef = () => {
             mountedRef.current = false;
         };
     });
+
+    return mountedRef;
 };
 
 export const useDocumentTitle = (title: string, keepOnUnmount = true) => {

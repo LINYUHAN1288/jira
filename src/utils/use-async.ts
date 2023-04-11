@@ -3,7 +3,8 @@
  * @author linyuhan
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useReducer, useCallback } from 'react';
+import { useMountedRef } from 'utils';
 
 interface State<D> {
     error: Error | null;
@@ -21,29 +22,44 @@ const defaultConfig = {
     throwOnError: false
 };
 
+const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+    const mountedRef = useMountedRef();
+    return useCallback(
+        (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
+        [dispatch, mountedRef]
+    );
+};
+
 export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConfig) => {
     const config = { ...defaultConfig, ...initialConfig };
     // useState<T>, T 泛型代表变量类型, 如下为 State<D>
-    const [state, setState] = useState<State<D>>({
-        ...defaultInitialState,
-        ...initialState
-    });
+    const [state, dispatch] = useReducer(
+        (state: State<D>, action: Partial<State<D>>) => ({ ...state, ...action }),
+        {
+            ...defaultInitialState,
+            ...initialState
+        }
+    );
+
+    const safeDispatch = useSafeDispatch(dispatch);
     // 直接传入函数是惰性初始化
     const [retry, setRetry] = useState(() => () => {});
 
-    const setData = (data: D) =>
-        setState({
+    const setData = useCallback((data: D) =>
+        safeDispatch({
             data,
             status: 'success',
             error: null
-        });
+        }), [safeDispatch]
+    );
 
-    const setError = (error: Error) =>
-        setState({
+    const setError = useCallback((error: Error) =>
+        safeDispatch({
             error,
             status: 'error',
             data: null
-        });
+        }), [safeDispatch]
+    );
 
     const run = useCallback(
         (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
@@ -56,7 +72,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
                     run(runConfig?.retry(), runConfig);
                 }
             });
-            setState({ ...state, status: 'loading' });
+            safeDispatch({ status: 'loading' });
             return promise
                 .then((data) => {
                     setData(data);
@@ -70,7 +86,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
                     return error;
                 });
         },
-        [config.throwOnError, setData, setError]
+        [config.throwOnError, setData, setError, safeDispatch]
     );
 
     return {
@@ -81,6 +97,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
         run,
         setData,
         setError,
+        retry,
         ...state
     };
 };
