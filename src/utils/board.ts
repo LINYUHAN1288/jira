@@ -7,6 +7,7 @@ import { QueryKey, useMutation, useQuery } from 'react-query';
 import { Board } from 'types/board';
 import { useHttp } from 'utils/http';
 import { useAddConfig, useDeleteConfig, useReorderBoardConfig } from './use-config';
+import { useProjectIdInUrl } from './projects';
 
 /**
  * 查询
@@ -44,3 +45,5 @@ export const useDeleteBoard = (queryKey: QueryKey) => {
         method: 'DELETE'
     }), useDeleteConfig(queryKey));
 };
+
+export const useBoardQueryKey = () => ['board', () => ({ projectId: useProjectIdInUrl() })];

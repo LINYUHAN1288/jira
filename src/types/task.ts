@@ -4,7 +4,7 @@ export interface Task {
     processorId: string;
     projectId: number;
     epicId: string;
-    billboardId: string;
+    boardId: string | number;
     typeId: string;
     note: string;
 }

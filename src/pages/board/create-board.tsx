@@ -1,22 +1,28 @@
 /**
- * @file add-board
+ * @file create-board 创建看板
  * @author linyuhan
  */
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Input } from 'antd';
+import { useProjectIdInUrl } from 'utils/projects';
+import { useAddBoard, useBoardQueryKey } from 'utils/board';
 
-export const AddBoard = () => {
+export const CreateBoard = () => {
     const [name, setName] = useState('');
+    const projectId = useProjectIdInUrl();
+
+    const { mutateAsync: addBoard } = useAddBoard(useBoardQueryKey());
 
     const submit = async () => {
+        await addBoard({ name, projectId });
         setName('');
     };
 
     return (
         <Container>
-            <Input size="large" value={name} onChange={e => setName(e.target.value)} />
+            <Input size="large" value={name} onPressEnter={submit} onChange={e => setName(e.target.value)} />
         </Container>
     );
 };

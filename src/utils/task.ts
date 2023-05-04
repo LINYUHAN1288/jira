@@ -1,16 +1,24 @@
+/**
+ * @file task hook
+ * @author linyuhan
+ */
+
 import { useHttp } from './http';
 import { QueryKey, useMutation, useQuery } from 'react-query';
 import { Task } from 'types/task';
 import { Project } from 'types/project';
 import { useAddConfig, useDeleteConfig, useEditConfig, useReorderTaskConfig } from './use-config';
 import { useDebounce } from 'utils';
+import { useUrlQueryParam } from './url';
+import { useMemo, useCallback } from 'react';
+import { useProjectIdInUrl } from './projects';
 
 export interface SortProps {
     fromId: number;
     referenceId: number;
     type: 'before' | 'after';
-    fromBillboardId?: number;
-    toBillboardId?: number;
+    fromBoardId?: number;
+    toBoardId?: number;
 }
 
 export const useTask = (id?: number) => {
@@ -70,4 +78,50 @@ export const useReorderTask = (queryKey: QueryKey) => {
             method: 'POST'
         });
     }, useReorderTaskConfig(queryKey));
+};
+
+export const useTasksSearchParams = () => {
+    const [params] = useUrlQueryParam(['name', 'typeId', 'processorId', 'tagId']);
+    const projectId = useProjectIdInUrl();
+
+    return useMemo(
+        () => ({
+            projectId,
+            typeId: Number(params.typeId) || undefined,
+            processorId: Number(params.processorId) || undefined,
+            tagId: Number(params.tagId) || undefined,
+            name: params.name
+        }),
+        [projectId, params]
+    )
+};
+
+export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()];
+
+export const useTasksModal = () => {
+    const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam(['editingTaskId']);
+
+    const { data: editingTask, isLoading } = useTask(Number(editingTaskId));
+
+    const startEdit = useCallback((id: number) => {
+        setEditingTaskId({ editingTaskId: id });
+    }, [setEditingTaskId]);
+
+    const close = useCallback(() => {
+        setEditingTaskId({ editingTaskId: '' });
+    }, [setEditingTaskId]);
+
+    return {
+        editingTaskId,
+        editingTask,
+        startEdit,
+        close,
+        isLoading
+    }
+};
+
+export const useTaskTypes = () => {
+    const client = useHttp();
+    
+    return useQuery(['taskTypes'], () => client('taskTypes'));
 };

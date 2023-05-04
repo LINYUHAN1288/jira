@@ -48,7 +48,7 @@ export const BoardPage = () => {
     };
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={'billboard'} type={'COLUMN'}>
+            <Droppable droppableId={'board'} type={'COLUMN'}>
                 {(provided, snapshot) => (
                     <div
                         {...provided.droppableProps}
