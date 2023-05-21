@@ -35,3 +35,16 @@ export const useProjectIdInUrl = () => {
     const id = pathname.match(/projects\/(\d+)/)?.[1];
     return Number(id);
 };
+
+export const useProject = (id?: number) => {
+    const client = useHttp();
+    return useQuery<Project>(
+        ['project', { id }],
+        () => client(`projects/${id}`),
+        {
+            enabled: Boolean(id)
+        }
+    )
+};
+
+export const useProjectInUrl = () => useProject(useProjectIdInUrl());

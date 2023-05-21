@@ -8,6 +8,7 @@ import { Board } from 'types/board';
 import { useHttp } from 'utils/http';
 import { useAddConfig, useDeleteConfig, useReorderBoardConfig } from './use-config';
 import { useProjectIdInUrl } from './projects';
+import { SortProps } from './task';
 
 /**
  * 查询
@@ -47,3 +48,15 @@ export const useDeleteBoard = (queryKey: QueryKey) => {
 };
 
 export const useBoardQueryKey = () => ['board', () => ({ projectId: useProjectIdInUrl() })];
+
+export const useBoardSearchParams = () => ({ projectId: useProjectIdInUrl() });
+
+export const useReorderBoard = (queryKey: QueryKey) => {
+    const client = useHttp();
+    return useMutation((params: SortProps) => {
+        return client('board/reorder', {
+            data: params,
+            method: 'POST'
+        });
+    }, useReorderBoardConfig(queryKey));
+};

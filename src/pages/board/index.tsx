@@ -3,11 +3,17 @@
  * @author linyuhan
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDocumentTitle } from 'utils';
 import { Drag, Drop, DropChild } from 'components/drag-and-drop';
+import { PageContainer } from 'components/lib';
+import { SearchPanel } from './search-panel';
+import { Spin } from 'antd';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import styled from '@emotion/styled';
+import { useProjectInUrl } from 'utils/projects';
+import { useBoard, useBoardQueryKey, useBoardSearchParams, useReorderBoard } from 'utils/board';
+import { useTasks, useTasksQueryKey, useTasksSearchParams, useReorderTask } from 'utils/task';
 
 const getItems = (cnt: number) =>
     Array.from({ length: cnt }, (v, k) => k).map(k => ({
@@ -39,47 +45,83 @@ const getListStyle = (isDraggingOver: boolean) => ({
 
 export const BoardPage = () => {
     useDocumentTitle('Board Page');
-    let items = getItems(10);
-    const onDragEnd = (res: DropResult) => {
-        if (!res.destination) {
-            return;
-        }
-        items = reorder(items, res.source.index, res.destination.index);
-    };
+
+    const { data: currentProject } = useProjectInUrl();
+    const { data: boards, isLoading: boardIsLoading } = useBoard(useBoardSearchParams());
+
+    const { isLoading: taskIsLoading } = useTasks(useTasksSearchParams());
+    const isLoading = taskIsLoading || boardIsLoading;
+
+    const onDragEnd = useDragEnd();
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={'board'} type={'COLUMN'}>
-                {(provided, snapshot) => (
-                    <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={getListStyle(snapshot.isDraggingOver)}
-                    >
-                        {items.map((item, index) => (
-                            <Draggable key={item.id} draggableId={item.id} index={index}>
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                                    >
-                                        {item.content}
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
+            <PageContainer>
+                <h1>{currentProject?.name}</h1>
+                <SearchPanel />
+                {isLoading ? (
+                    <Spin size="large" />
+                ) : (
+                    <ColumnsContainer>
+                        <Drop type={'COLUMN'} direction="horizontal" droppableId="board">
+                            <DropChild style={{ display: 'flex' }}>
+                                {boards?.map((board, index) => (
+                                    <Drag key={board.id} draggableId={'board' + board.id} index={index}>
+                                        <div></div>
+                                    </Drag>
+                                ))}
+                            </DropChild>
+                        </Drop>
+                    </ColumnsContainer>
                 )}
-            </Droppable>
+            </PageContainer>
         </DragDropContext>
     );
 };
 
-export const Container = styled.div`
+export const useDragEnd = () => {
+    const { data: boards } = useBoard(useBoardSearchParams());
+    const { mutate: reorderBoard } = useReorderBoard(useBoardQueryKey());
+    const { mutate: reorderTask } = useReorderTask(useTasksQueryKey());
+    const { data: allTasks = [] } = useTasks(useTasksSearchParams());
+
+    return useCallback(({ source, destination, type }: DropResult) => {
+        if (!destination) {
+            return;
+        }
+
+        if (type === 'COLUMN') {
+            const fromId = boards?.[source.index].id;
+            const toId = boards?.[destination.index].id;
+            if (!fromId || !toId || fromId === toId) {
+                return;
+            }
+            const type = destination.index > source.index ? 'after' : 'before';
+            reorderBoard({ fromId, referenceId: toId, type });
+        }
+
+        if (type === 'ROW') {
+            const fromBoardId = +source.droppableId;
+            const toBoardId = +destination.droppableId;
+            const fromTask = allTasks.filter((task: any) => task.boardId === fromBoardId)[source.index];
+            const toTask = allTasks.filter((task: any) => task.boardId === toBoardId)[destination.index];
+
+            if (fromTask?.id === toTask?.id) {
+                return;
+            }
+            reorderTask({
+                fromId: fromTask?.id,
+                referenceId: toTask?.id,
+                fromBoardId,
+                toBoardId,
+                type: fromBoardId === toBoardId && destination.index > source.index ? 'after' : 'before'
+            });
+        }
+    }, []);
+};
+
+export const ColumnsContainer = styled.div`
     display: flex;
-    flex-direction: column;
-    padding: 3.2rem;
-    width: 100%;
+    overflow-x: scroll;
+    flex: 1;
 `;

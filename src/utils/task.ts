@@ -32,7 +32,7 @@ export const useTasks = (param?: Partial<Task>) => {
     const client = useHttp();
     const debouncedParam = { ...param, name: useDebounce(param?.name, 200) };
 
-    return useQuery<Task>(['tasks', debouncedParam], () => {
+    return useQuery<Task[]>(['tasks', debouncedParam], () => {
         return client('tasks', { data: debouncedParam });
     });
 };

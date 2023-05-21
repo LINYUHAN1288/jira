@@ -1,10 +1,10 @@
 export interface Task {
     id: number;
     name: string;
-    processorId: string;
+    processorId: string | number;
     projectId: number;
-    epicId: string;
+    epicId: string | number;
     boardId: string | number;
-    typeId: string;
+    typeId: string | number;
     note: string;
 }
