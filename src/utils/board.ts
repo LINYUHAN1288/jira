@@ -47,7 +47,7 @@ export const useDeleteBoard = (queryKey: QueryKey) => {
     }), useDeleteConfig(queryKey));
 };
 
-export const useBoardQueryKey = () => ['board', () => ({ projectId: useProjectIdInUrl() })];
+export const useBoardQueryKey = () => ['board', useProjectIdInUrl()];
 
 export const useBoardSearchParams = () => ({ projectId: useProjectIdInUrl() });
 
